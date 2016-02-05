@@ -147,9 +147,9 @@ class RecoveryController(object):
                         greenthread.sleep(int(node_err_wait))
 
                         # Start add_failed_host thread
-                        #TODO(sampath):
-                        #Avoid create thread here,
-                        #insted call rc_starter.add_failed_host
+                        # TODO(sampath):
+                        # Avoid create thread here,
+                        # insted call rc_starter.add_failed_host
                         retry_mode = True
                         th = threading.Thread(
                             target=self.rc_starter.add_failed_host,
@@ -162,9 +162,9 @@ class RecoveryController(object):
 
                     elif row.get("recover_by") == 1:
                         # instance recovery event
-                        #TODO(sampath):
-                        #Avoid create thread here,
-                        #insted call rc_starter.add_failed_instance
+                        # TODO(sampath):
+                        # Avoid create thread here,
+                        # insted call rc_starter.add_failed_instance
                         th = threading.Thread(
                             target=self.rc_starter.add_failed_instance,
                             args=(row.get("notification_id"), row.get(
@@ -181,9 +181,9 @@ class RecoveryController(object):
                         th.start()
 
             # Start handle_pending_instances thread
-            #TODO(sampath):
-            #Avoid create thread here,
-            #insted call rc_starter.handle_pending_instances()
+            # TODO(sampath):
+            # Avoid create thread here,
+            # insted call rc_starter.handle_pending_instances()
             th = threading.Thread(
                 target=self.rc_starter.handle_pending_instances)
             th.start()
@@ -250,7 +250,8 @@ class RecoveryController(object):
                   "WHERE id = '%s'" \
                   % (4, datetime.datetime.now(),
                     datetime.datetime.now(), row.get("id"))
-            self.rc_util.syslogout_ex("RecoveryControllerl_0048", syslog.LOG_INFO)
+            self.rc_util.syslogout_ex("RecoveryControllerl_0048",
+                                      syslog.LOG_INFO)
             self.rc_util.syslogout("SQL=" + sql, syslog.LOG_INFO)
             cursor.execute(sql)
             conn.commit()
@@ -274,7 +275,8 @@ class RecoveryController(object):
                   "WHERE progress = 0 AND notification_uuid = '%s' " \
                   "ORDER BY create_at DESC, id DESC" \
                   % (row.get("notification_uuid"))
-            self.rc_util.syslogout_ex("RecoveryControllerl_0050", syslog.LOG_INFO)
+            self.rc_util.syslogout_ex("RecoveryControllerl_0050",
+                                      syslog.LOG_INFO)
             self.rc_util.syslogout("SQL=" + sql, syslog.LOG_INFO)
             cursor.execute(sql)
             result2 = cursor.fetchall()
@@ -292,7 +294,8 @@ class RecoveryController(object):
                           "WHERE id = '%s'" \
                         % (4, datetime.datetime.now(),
                           datetime.datetime.now(), row2.get("id"))
-                    self.rc_util.syslogout_ex("RecoveryControllerl_0051", syslog.LOG_INFO)
+                    self.rc_util.syslogout_ex("RecoveryControllerl_0051",
+                                              syslog.LOG_INFO)
                     self.rc_util.syslogout("SQL=" + sql, syslog.LOG_INFO)
                     cursor.execute(sql)
                     conn.commit()
@@ -313,7 +316,8 @@ class RecoveryController(object):
                   "WHERE progress = 0 AND notification_hostname = '%s' " \
                   "ORDER BY create_at DESC, id DESC" \
                   % (row.get("notification_hostname"))
-            self.rc_util.syslogout_ex("RecoveryControllerl_0053", syslog.LOG_INFO)
+            self.rc_util.syslogout_ex("RecoveryControllerl_0053",
+                                      syslog.LOG_INFO)
             self.rc_util.syslogout("SQL=" + sql, syslog.LOG_INFO)
             cursor.execute(sql)
             result2 = cursor.fetchall()
@@ -331,7 +335,8 @@ class RecoveryController(object):
                           "WHERE id = '%s'" \
                         % (4, datetime.datetime.now(),
                           datetime.datetime.now(), row2.get("id"))
-                    self.rc_util.syslogout_ex("RecoveryControllerl_0054", syslog.LOG_INFO)
+                    self.rc_util.syslogout_ex("RecoveryControllerl_0054",
+                                              syslog.LOG_INFO)
                     self.rc_util.syslogout("SQL=" + sql, syslog.LOG_INFO)
                     cursor.execute(sql)
                     conn.commit()

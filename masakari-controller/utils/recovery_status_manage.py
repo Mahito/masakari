@@ -25,11 +25,6 @@ import sys
 import argparse
 import subprocess
 
-################################################################################
-#
-# (CLASS):recovery_status_manage
-#
-################################################################################
 
 class recovery_status_manage(object):
 
@@ -37,15 +32,10 @@ class recovery_status_manage(object):
     recovery status management class
     """
 
-################################################################################
-#
-# (Constructor):__init__
-#
-################################################################################
-
     def __init__(self):
 
-        parser = argparse.ArgumentParser(prog='recovery_status_manage.py', add_help=False)
+        parser = argparse.ArgumentParser(prog='recovery_status_manage.py',
+                                         add_help=False)
 
         parser.add_argument('--mode', help='list/update')
         parser.add_argument('--uuid', help='uuid')
@@ -55,7 +45,7 @@ class recovery_status_manage(object):
 
         args = parser.parse_args()
 
-        #command input information check
+        # command input information check
         if self._command_input_information_check(parser,args) == "NG":
             return
 
@@ -63,41 +53,34 @@ class recovery_status_manage(object):
         print msg
 
         try:
-
-            #DB connection
             db = self._db_connect(args.db_user,
                                   args.db_password,
                                   args.db_host)
 
-            #mode="list"
             if args.mode == "list":
 
-                #ALL
                 if args.uuid == None:
-
-                    sysout_sql = self._recovery_status_manage_list_all(args.db_user,
-                                                            args.db_password,
-                                                            args.db_host,
-                                                            db)
-
-                #UUID
-                else:
-
-                    sysout_sql = self._recovery_status_manage_list_uuid(args.uuid,
+                    sysout_sql = self._recovery_status_manage_list_all(
                                                             args.db_user,
                                                             args.db_password,
                                                             args.db_host,
                                                             db)
-            #mode="update"
-            else:
 
-                sysout_sql = self._recovery_status_manage_update(args.uuid,
+                else:
+                    sysout_sql = self._recovery_status_manage_list_uuid(
+                                                            args.uuid,
+                                                            args.db_user,
+                                                            args.db_password,
+                                                            args.db_host,
+                                                            db)
+            else:
+                sysout_sql = self._recovery_status_manage_update(
+                                                          args.uuid,
                                                           args.db_user,
                                                           args.db_password,
                                                           args.db_host,
                                                           db)
 
-            #sysout
             if sysout_sql != None:
                  subprocess.call(sysout_sql, shell=True)
 
@@ -110,16 +93,10 @@ class recovery_status_manage(object):
             print msg
 
 
-################################################################################
-#
-# (METHOD):_command_input_information_check
-#
-################################################################################
-
     def _command_input_information_check(self,parser,args):
 
         result = "OK"
-        #command format and input parameter check
+        # command format and input parameter check
 
         if (args.mode == None
          or args.db_user == None
@@ -137,17 +114,11 @@ class recovery_status_manage(object):
         else:
             result = "NG"
 
-        #usage display
         if result == "NG":
             parser.print_help()
 
         return result
 
-################################################################################
-#
-# (METHOD):_db_connect
-#
-################################################################################
 
     def _db_connect(self,
                     mysql_user_name,
@@ -168,12 +139,6 @@ class recovery_status_manage(object):
             print msg
             raise
 
-
-################################################################################
-#
-# (METHOD):_recovery_status_manage_list_all
-#
-################################################################################
 
     def _recovery_status_manage_list_all(self,
                                         mysql_user_name,
@@ -224,12 +189,6 @@ class recovery_status_manage(object):
             db.commit()
             db.close()
 
-
-################################################################################
-#
-# (METHOD):_recovery_status_manage_list_uuid
-#
-################################################################################
 
     def _recovery_status_manage_list_uuid(self,
                                           uuid,
@@ -290,12 +249,6 @@ class recovery_status_manage(object):
             db.close()
 
 
-################################################################################
-#
-# (METHOD):_recovery_status_manage_update
-#
-################################################################################
-
     def _recovery_status_manage_update(self,
                                        uuid,
                                        mysql_user_name,
@@ -321,7 +274,6 @@ class recovery_status_manage(object):
                 return None
 
             else:
-                # update
                 update_at = datetime.datetime.now()
                 progress = "2"
                 sql = ("UPDATE vm_list "
@@ -364,20 +316,18 @@ class recovery_status_manage(object):
             db.commit()
             db.close()
 
-################################################################################
 
 if __name__ == '__main__':
 
     recovery_status_manage()
 
 
-##########################################################################################
+###############################################################################
 #
-#(command)
+# (command)
 #
-#[python recovery_status_manage.py --mode list --db-user root --db-password openstack --db-host localhost]
-#[python recovery_status_manage.py --mode list --uuid DB1-UUID-0001 --db-user root --db-password openstack --db-host localhost]
-#[python recovery_status_manage.py --mode update --uuid DB1-UUID-0001 --db-user root --db-password openstack --db-host localhost]
+# [python recovery_status_manage.py --mode list --db-user root --db-password openstack --db-host localhost]
+# [python recovery_status_manage.py --mode list --uuid DB1-UUID-0001 --db-user root --db-password openstack --db-host localhost]
+# [python recovery_status_manage.py --mode update --uuid DB1-UUID-0001 --db-user root --db-password openstack --db-host localhost]
 #
-##########################################################################################
-
+###############################################################################

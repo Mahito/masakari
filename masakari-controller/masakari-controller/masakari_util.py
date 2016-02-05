@@ -245,20 +245,24 @@ class RecoveryControllerUtilDb(object):
             self.rc_util.syslogout_ex("RecoveryControllerUtilDb_0006",
                                       syslog.LOG_INFO)
             cursor.execute(sql_operation, sql_values)
-            self.rc_util.syslogout("SQL=" + str(cursor._executed), syslog.LOG_INFO)
+            self.rc_util.syslogout("SQL=" + str(cursor._executed),
+                                   syslog.LOG_INFO)
 
-            #cursor.execute(sql)
+            # cursor.execute(sql)
 
-            #self.rc_util.syslogout("MYSQL QUERY=" + str(cursor._executed), syslog.LOG_INFO)
+            # self.rc_util.syslogout("MYSQL QUERY=" + str(cursor._executed),
+            #                        syslog.LOG_INFO)
 
             sql = ("select * from reserve_list "
-                   "where deleted=0 and hostname='%s' for update") % (jsonData.get("hostname"))
+                   "where deleted=0 and hostname='%s' for update"
+                  ) % (jsonData.get("hostname"))
 
             cnt = cursor.execute(sql)
             if cnt > 0:
                 sql = ("update reserve_list "
                        "set deleted=1, delete_at='%s' "
-                       "where hostname='%s'") % (datetime.datetime.now(),jsonData.get("hostname"))
+                       "where hostname='%s'"
+                      ) % (datetime.datetime.now(),jsonData.get("hostname"))
                 cursor.execute(sql)
 
             ret_dic = {
@@ -996,9 +1000,9 @@ class RecoveryControllerUtilApi(object):
 
         return response_code, rbody
 
-    ##TODO(sampath):
-    ##Use novaclient and omit this code
-    ##For now, imported this code from current release
+    # TODO(sampath):
+    # Use novaclient and omit this code
+    # For now, imported this code from current release
     def _get_x_subject_token(self, curl_response):
 
         x_subject_token = None
@@ -1014,9 +1018,9 @@ class RecoveryControllerUtilApi(object):
     def _get_body(self, curl_response):
         return curl_response[-1]
 
-    ##TODO(sampath):
-    ##Use novaclient and omit this code
-    ##For now, imported this code from current release
+    # TODO(sampath):
+    # Use novaclient and omit this code
+    # For now, imported this code from current release
     def _exe_curl(self, curl):
 
         conf_dic = self.rc_config.get_value('recover_starter')

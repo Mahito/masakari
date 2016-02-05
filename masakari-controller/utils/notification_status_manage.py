@@ -23,11 +23,6 @@ import MySQLdb
 import argparse
 import subprocess
 
-################################################################################
-#
-# (CLASS):notification_status_manage
-#
-################################################################################
 
 class notification_status_manage(object):
 
@@ -35,16 +30,10 @@ class notification_status_manage(object):
     notification status management class
     """
 
-
-################################################################################
-#
-# (Constructor):__init__
-#
-################################################################################
-
     def __init__(self):
 
-        parser = argparse.ArgumentParser(prog='notification_status_manage.py', add_help=False)
+        parser = argparse.ArgumentParser(prog='notification_status_manage.py',
+                                         add_help=False)
 
         parser.add_argument('--mode', help='list')
         parser.add_argument('--db-user', help='mysql user name')
@@ -53,7 +42,7 @@ class notification_status_manage(object):
 
         args = parser.parse_args()
 
-        #command input information check
+        # command input information check
         if self._command_input_information_check(parser,args) == "NG":
             return
 
@@ -61,19 +50,17 @@ class notification_status_manage(object):
         print msg
 
         try:
-
-            #DB connection
             db = self._db_connect(args.db_user,
                                   args.db_password,
                                   args.db_host)
 
-            #mode="list"
+            # mode="list"
             sysout_sql = self._notification_status_list(args.db_user,
                                                         args.db_password,
                                                         args.db_host,
                                                         db)
 
-            #sysout
+            # sysout
             if sysout_sql != None:
                  subprocess.call(sysout_sql, shell=True)
 
@@ -86,16 +73,10 @@ class notification_status_manage(object):
             print msg
 
 
-################################################################################
-#
-# (METHOD):_command_input_information_check
-#
-################################################################################
-
     def _command_input_information_check(self,parser,args):
 
         result = "OK"
-        #command format and input parameter check
+        # command format and input parameter check
 
         if (args.mode == None
          or args.db_user == None
@@ -106,18 +87,11 @@ class notification_status_manage(object):
         if args.mode != "list":
             result = "NG"
 
-        #usage display
         if result == "NG":
             parser.print_help()
 
         return result
 
-
-################################################################################
-#
-# (METHOD):_db_connect
-#
-################################################################################
 
     def _db_connect(self,
                     mysql_user_name,
@@ -138,12 +112,6 @@ class notification_status_manage(object):
             print msg
             raise
 
-
-################################################################################
-#
-# (METHOD):_notification_status_list
-#
-################################################################################
 
     def _notification_status_list(self,
                                   mysql_user_name,
@@ -206,18 +174,16 @@ class notification_status_manage(object):
             db.commit()
             db.close()
 
-################################################################################
 
 if __name__ == '__main__':
 
     notification_status_manage()
 
 
-##########################################################################################
+###############################################################################
 #
-#(command)
+# (command)
 #
-#[python notification_status_manage.py --mode list --db-user root --db-password openstack --db-host localhost]
+# [python notification_status_manage.py --mode list --db-user root --db-password openstack --db-host localhost]
 #
-##########################################################################################
-
+###############################################################################

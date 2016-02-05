@@ -24,33 +24,22 @@ import datetime
 import argparse
 import ConfigParser
 
-################################################################################
-#
-# (CLASS):vmha_data_manage
-#
-################################################################################
-
 class vmha_data_manage(object):
 
     """
     VM-HA data management class
     """
 
-################################################################################
-#
-# (Constructor):__init__
-#
-################################################################################
-
     def __init__(self):
 
-        parser = argparse.ArgumentParser(prog='vmha_data_manage.py', add_help=False)
+        parser = argparse.ArgumentParser(prog='vmha_data_manage.py',
+                                         add_help=False)
 
         parser.add_argument('--mode', help='delete')
 
         args = parser.parse_args()
 
-        #command input information check
+        # command input information check
         if self._command_input_information_check(parser,args) == "NG":
             return
 
@@ -61,10 +50,10 @@ class vmha_data_manage(object):
             inifile.read(config_file_path)
 
 
-            #DB connection
+            # DB connection
             db = self._db_connect(inifile)
 
-            #mode="delete"
+            # mode="delete"
             period = int(30)
             try:
                 period = int(inifile.get('vmha_data_manage', 'period'))
@@ -78,16 +67,11 @@ class vmha_data_manage(object):
             pass
 
 
-################################################################################
-#
-# (METHOD):_command_input_information_check
-#
-################################################################################
 
     def _command_input_information_check(self,parser,args):
 
         result = "OK"
-        #command format and input parameter check
+        # command format and input parameter check
 
         if (args.mode == None):
             result = "NG"
@@ -96,12 +80,6 @@ class vmha_data_manage(object):
             result = "NG"
 
         return result
-
-################################################################################
-#
-# (METHOD):_db_connect
-#
-################################################################################
 
 
     def _db_connect(self,inifile):
@@ -127,12 +105,6 @@ class vmha_data_manage(object):
         except:
             raise
 
-
-################################################################################
-#
-# (METHOD):_vmha_data_manage_delete
-#
-################################################################################
 
     def _vmha_data_manage_delete(self,
                                  period,
@@ -179,18 +151,17 @@ class vmha_data_manage(object):
             db.commit()
             db.close()
 
-################################################################################
 
 if __name__ == '__main__':
 
     vmha_data_manage()
 
 
-##########################################################################################
+###############################################################################
 #
-#(command)
+# (command)
 #
-#[python vmha_data_manage.py --mode delete]
+# [python vmha_data_manage.py --mode delete]
 #
-##########################################################################################
+##############################################################################
 

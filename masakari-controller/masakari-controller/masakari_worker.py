@@ -27,10 +27,10 @@ import sys
 import json
 import datetime
 from eventlet import greenthread
-## TODO(sampath):
-## Delete this import if unused
-## conficlt with _do_action_db(self, config, sql):
-#import masakari_config as config
+# TODO(sampath):
+# Delete this import if unused
+# conficlt with _do_action_db(self, config, sql):
+# import masakari_config as config
 import masakari_util as util
 
 
@@ -117,7 +117,7 @@ class RecoveryControllerWorker(object):
         return vm_info
 
     def _get_vmha_param(self, uuid, primary_id):
-        #TODO(sampath): remove unused 'uuid' form args
+        # TODO(sampath): remove unused 'uuid' form args
         try:
             # Get need recovery infomation.
             sql = "SELECT recover_by, recover_to " \
@@ -402,7 +402,7 @@ class RecoveryControllerWorker(object):
                     "while it is in vm_state stopped")
 
                 def msg_filter(return_message, ignore_message_list):
-                    #TODO(sampath):
+                    # TODO(sampath):
                     # Make this simple and opnestak version independet
                     # This patch is to absorb the message diff in juno and kilo
                     # juno message
@@ -457,7 +457,7 @@ class RecoveryControllerWorker(object):
                     "while it is in vm_state active")
 
                 def msg_filter(return_message, ignore_message_list):
-                    #TODO(sampath)
+                    # TODO(sampath)
                     # see the previous comment for def msg_filter
                     for ignore_message in ignore_message_list:
                         if ignore_message in return_message:
@@ -528,7 +528,7 @@ class RecoveryControllerWorker(object):
                     "while it is in vm_state stopped")
 
                 def msg_filter(return_message, ignore_message_list):
-                    #TODO(sampath)
+                    # TODO(sampath)
                     # see the previous comment for def msg_filter
                     for ignore_message in ignore_message_list:
                         if ignore_message in return_message:
@@ -570,7 +570,7 @@ class RecoveryControllerWorker(object):
         return status
 
     def _do_action_db(self, config, sql):
-        #TODO(sampath)
+        # TODO(sampath)
         # Remove this method and use sqlalchemy
         result = None
         db = None
@@ -823,11 +823,13 @@ class RecoveryControllerWorker(object):
             try:
                 # Successful execution.
                 if status == self.STATUS_NORMAL:
-                    self.rc_util_db.update_vm_list_db('progress', 2, primary_id)
+                    self.rc_util_db.update_vm_list_db('progress',
+                                                      2, primary_id)
 
                 # Abnormal termination.
                 else:
-                    self.rc_util_db.update_vm_list_db('progress', 3, primary_id)
+                    self.rc_util_db.update_vm_list_db('progress',
+                                                      3, primary_id)
 
                 # Release semaphore
                 if sem:

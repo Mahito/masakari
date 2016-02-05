@@ -24,11 +24,6 @@ import datetime
 import argparse
 import subprocess
 
-################################################################################
-#
-# (CLASS):reserve_host_manage
-#
-################################################################################
 
 class reserve_host_manage(object):
 
@@ -36,29 +31,26 @@ class reserve_host_manage(object):
     Spare host list registration class
     """
 
-
-################################################################################
-#
-# (Constructor):__init__
-#
-################################################################################
-
     def __init__(self):
 
-        parser = argparse.ArgumentParser(prog='reserve_host_manage.py', add_help=False)
+        parser = argparse.ArgumentParser(prog='reserve_host_manage.py',
+                                         add_help=False)
 
         parser.add_argument('--mode', help='add/update/delete/list')
         parser.add_argument('--port', help='cluster_port')
         parser.add_argument('--host', help='hostname')
-        parser.add_argument('--before-host', help='Change before the host name')
-        parser.add_argument('--after-host', help='Change after the host name')
+        parser.add_argument('--before-host',
+                            help='Change before the host name')
+        parser.add_argument('--after-host',
+                            help='Change after the host name')
         parser.add_argument('--db-user', help='mysql user name')
-        parser.add_argument('--db-password', help='mysql user password')
+        parser.add_argument('--db-password',
+                            help='mysql user password')
         parser.add_argument('--db-host', help='mysql host name')
 
         args = parser.parse_args()
 
-        #command input information check
+        # command input information check
         if self._command_input_information_check(parser,args) == "NG":
             return
 
@@ -66,14 +58,11 @@ class reserve_host_manage(object):
         print msg
 
         try:
-
-            #DB connection
             db = self._db_connect(args.db_user,
                                   args.db_password,
                                   args.db_host)
 
-            #mode sorting
-            #mode="add"
+            # mode sorting
             if args.mode == "add":
                 sysout_sql = self._reserve_host_add(args.port,
                                                     args.host,
@@ -82,7 +71,6 @@ class reserve_host_manage(object):
                                                     args.db_host,
                                                     db)
 
-            #mode="update"
             elif args.mode == "update":
                  sysout_sql = self._reserve_host_update(args.port,
                                                         args.before_host,
@@ -92,7 +80,6 @@ class reserve_host_manage(object):
                                                         args.db_host,
                                                         db)
 
-            #mode="delete"
             elif args.mode == "delete":
                 sysout_sql = self._reserve_host_delete(args.port,
                                                        args.host,
@@ -102,16 +89,13 @@ class reserve_host_manage(object):
                                                        db)
 
 
-            #mode="list"
             else:
-                #ALL
                 if args.port == None:
                     sysout_sql = self._reserve_host_list_all(args.db_user,
                                                              args.db_password,
                                                              args.db_host,
                                                              db)
 
-                #PORT
                 else:
                     sysout_sql = self._reserve_host_list_port(args.port,
                                                               args.db_user,
@@ -119,7 +103,6 @@ class reserve_host_manage(object):
                                                               args.db_host,
                                                               db)
 
-            #sysout
             if sysout_sql != None:
                  subprocess.call(sysout_sql, shell=True)
 
@@ -131,16 +114,11 @@ class reserve_host_manage(object):
             msg = "reserve_host_manage execution end"
             print msg
 
-################################################################################
-#
-# (METHOD):_command_input_information_check
-#
-################################################################################
 
     def _command_input_information_check(self,parser,args):
 
         result = "OK"
-        #command format and input parameter check
+        # command format and input parameter check
 
         if (args.mode == None
          or args.db_user == None
@@ -178,17 +156,11 @@ class reserve_host_manage(object):
         else:
             result = "NG"
 
-        #usage display
         if result == "NG":
             parser.print_help()
 
         return result
 
-################################################################################
-#
-# (METHOD):_db_connect
-#
-################################################################################
 
     def _db_connect(self,
                     mysql_user_name,
@@ -209,11 +181,6 @@ class reserve_host_manage(object):
             print msg
             raise
 
-################################################################################
-#
-# (METHOD):_reserve_host_add
-#
-################################################################################
 
     def _reserve_host_add(self,
                           port_number,
@@ -287,11 +254,6 @@ class reserve_host_manage(object):
             db.commit()
             db.close()
 
-################################################################################
-#
-# (METHOD):_reserve_host_update
-#
-################################################################################
 
     def _reserve_host_update(self,
                              port_number,
@@ -385,13 +347,6 @@ class reserve_host_manage(object):
             db.close()
 
 
-################################################################################
-#
-# (METHOD):_reserve_host_delete
-#
-################################################################################
-
-
     def _reserve_host_delete(self,
                              port_number,
                              host_name,
@@ -464,11 +419,6 @@ class reserve_host_manage(object):
             db.commit()
             db.close()
 
-################################################################################
-#
-# (METHOD):_reserve_host_list_all
-#
-################################################################################
 
     def _reserve_host_list_all(self,
                                mysql_user_name,
@@ -521,11 +471,6 @@ class reserve_host_manage(object):
         finally:
             db.close()
 
-################################################################################
-#
-# (METHOD):_reserve_host_list_port
-#
-################################################################################
 
     def _reserve_host_list_port(self,
                            port_number,
@@ -582,20 +527,18 @@ class reserve_host_manage(object):
         finally:
             db.close()
 
-################################################################################
 
 if __name__ == '__main__':
 
     reserve_host_manage()
 
-##########################################################################################
+###############################################################################
 #
-#(command sample)
-#[python reserve_host_manage.py --mode add --port 1111 --host devstack01 --db-user root --db-password openstack --db-host localhost]
-#[python reserve_host_manage.py --mode update --port 1111 --before-host devstack01 --after-host devstack02 --db-user root --db-password openstack --db-host localhost]
-#[python reserve_host_manage.py --mode delete --port 1111 --host devstack01 --db-user root --db-password openstack --db-host localhost]
-#[python reserve_host_manage.py --mode list --db-user root --db-password openstack --db-host localhost]
-#[python reserve_host_manage.py --mode list --port 1111 --db-user root --db-password openstack --db-host localhost]
+# (command sample)
+# [python reserve_host_manage.py --mode add --port 1111 --host devstack01 --db-user root --db-password openstack --db-host localhost]
+# [python reserve_host_manage.py --mode update --port 1111 --before-host devstack01 --after-host devstack02 --db-user root --db-password openstack --db-host localhost]
+# [python reserve_host_manage.py --mode delete --port 1111 --host devstack01 --db-user root --db-password openstack --db-host localhost]
+# [python reserve_host_manage.py --mode list --db-user root --db-password openstack --db-host localhost]
+# [python reserve_host_manage.py --mode list --port 1111 --db-user root --db-password openstack --db-host localhost]
 #
-##########################################################################################
-
+###############################################################################
